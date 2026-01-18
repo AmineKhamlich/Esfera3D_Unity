@@ -1,0 +1,1 @@
+C:\Unity\Esfera3D\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\644b1o6x\obj\arm64-v8a
