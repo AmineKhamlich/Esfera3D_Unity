@@ -5,8 +5,8 @@ using UnityEngine;
 // Només afegim el que és únic pels Fantasmes: Rotació Visual.
 public class HazardContoller : BouncingObject
 {
-    // NO cal reescriure Awake, FixedUpdate ni OnCollisionStay, perquè ja els té el pare.
-    
+    // NO cal reescriure Awake, FixedUpdate ni OnCollisionStay, perquè ja els té el pare (BouncingObject)
+
     // Update és únic del Hazard perquè volem que els ulls mirin cap on vagi
     void Update()
     {

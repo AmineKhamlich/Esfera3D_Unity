@@ -1,7 +1,7 @@
 using UnityEngine; // Importa els components bàsics de Unity
 
-// AQUEST SCRIPT NOMÉS CONTROLA EL MOVIMENT I LA FÍSICA BOLE
-// (Tota la lògica de punts, UI i menús s'ha mogut al GameController)
+// AQUEST SCRIPT NOMÉS CONTROLA EL MOVIMENT I LA FÍSICA DE LA BOLA O JUGADOR.
+// (Tota la lògica de punts, UI i menús s'ha mogut al GameController) un cop creat el script GameController.cs
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb; // Variable per guardar la referència al component físic (Rigidbody) del jugador
