@@ -1,6 +1,6 @@
-using UnityEngine; // Importa llibreries de Unity
+using UnityEngine;
 
-// Script senzill perquè la càmera segueixi al jugador mantenint la distància
+// Script perquè la càmera segueixi al jugador mantenint la distància
 public class CameraController : MonoBehaviour
 {
     // Variable pública (o serialitzada) per assignar el Jugador des de l'Inspector

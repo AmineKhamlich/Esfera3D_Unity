@@ -2,18 +2,10 @@ using UnityEngine;
 
 // CLASSE FILLA: ITEM (Píndola)
 // Hereta de BouncingObject.
-// L'única diferència amb el Hazard és que ha de tenir molt poca massa.
+// Hereta tot el moviment.
 public class ItemController : BouncingObject
 {
-    // 'override' vol dir: "Vull fer servir la versió del pare, però afegint-hi coses meves"
-    protected override void Awake()
-    {
-        // 1. Primer fem tot el que fa el pare (configurar Rigidbody, impuls, etc.)
-        base.Awake();
-
-        // 2. Després apliquem la nostra personalització
-        rb.mass = 0.001f; // Massa tiny perquè el jugador no noti el xoc
-    }
-
-    // No cal res més! FixedUpdate i OnCollisionStay ja funcionen sols gràcies a l'herència.
+    // Si mes endavant vull afegir funcionalitats específiques per als items, les posaré aquí. de moment el deixo creat buit.
+    // No necessito codi aquí perquè BouncingObject fa tota la feina.
+    // El Mass a 0.001 al Rigidbody des de l'Inspector a Unity sense posar codi a la classe.
 }

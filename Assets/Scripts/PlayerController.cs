@@ -1,10 +1,10 @@
-using UnityEngine; // Importa els components bàsics de Unity
+using UnityEngine;
 
 // AQUEST SCRIPT NOMÉS CONTROLA EL MOVIMENT I LA FÍSICA DE LA BOLA O JUGADOR.
 // (Tota la lògica de punts, UI i menús s'ha mogut al GameController) un cop creat el script GameController.cs
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody rb; // Variable per guardar la referència al component físic (Rigidbody) del jugador
+    Rigidbody rb; // Variable per guardar la referència al component físic (Rigidbody) del jugador, ja creat a la classe BouncingObject
 
     [Header("Movement Settings")] // Configuració de valors de moviment a l'Inspector
     [SerializeField] float speed = 10f; // Velocitat de rodatge de la pilota
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     // Referència al GameController per comunicar events (com agafar items o caure)
     [SerializeField] GameController gameController; 
 
-    private bool useAccelerometer = false; // Aquesta variable ens la canvia el GameController segons què triï l'usuari
+    private bool useAccelerometre = false; // Aquesta variable ens la canvia el GameController segons què triï l'usuari
 
     void Start()
     {
@@ -34,12 +34,12 @@ public class PlayerController : MonoBehaviour
     // Li diu si ha de fer servir l'acceleròmetre (true) o el joystick (false)
     public void SetInputType(bool enableAccelerometer)
     {
-        this.useAccelerometer = enableAccelerometer;
+        this.useAccelerometre = enableAccelerometer;
     }
 
     void Update()
     {
-        // Update es crida a cada frame gràfic. Aquí només comprovem coses que no són física pura.
+        // Update es crida a cada frame gràfic
         // Comprovem si ha caigut fora del mapa
         if (transform.position.y < fallThreshold)
         {
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Acceleròmetre (Només si l'usuari ho ha triat al menú)
-            if (useAccelerometer)
+            if (useAccelerometre)
             {
                 // L'acceleròmetre mesura la inclinació del telèfon.
                 // .x és inclinar esquerra/dreta.
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
         // Si xoquem amb un enemic (Fantasmes/Boles)
         if (collision.gameObject.CompareTag("Hazards"))
         {
-            // Aquí no cal avisar al GameController, el salt és una reacció física immediata del Player
+            // Aquí no cal avisar al GameController, el salt es concecuencia del xoc
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }

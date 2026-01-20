@@ -1,16 +1,13 @@
 using UnityEngine;
 
 // CLASSE FILLA: HAZARD (Enemic/Fantasma)
-// Hereta de BouncingObject, així que ja té tot el moviment i rebot inclòs automàticament.
-// Només afegim el que és únic pels Fantasmes: Rotació Visual.
+// Hereta de BouncingObject, així que ja té tot el moviment i rebot
 public class HazardContoller : BouncingObject
 {
-    // NO cal reescriure Awake, FixedUpdate ni OnCollisionStay, perquè ja els té el pare (BouncingObject)
-
     // Update és únic del Hazard perquè volem que els ulls mirin cap on vagi
     void Update()
     {
-        // Només si es mou, girem el model visualment
+        // Puc accedir a 'rb' perquè l'he fet public a la classe pare BouncingObject
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(rb.linearVelocity.normalized);

@@ -2,57 +2,69 @@ using UnityEngine;
 
 // CLASSE PARE (HERÈNCIA)
 // Aquesta classe conté tota la lògica compartida de moviment i rebot.
-// "abstract" vol dir que no pots posar aquest script directament a un objecte,
-// has de crear un fill (com Hazard o Item) que l'hereti.
+
+// que fa aquesta linia de codi? 
+// El RequireComponent s'assegura que qualsevol GameObject que tingui aquest script també tingui un Rigidbody i un Collider.
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public abstract class BouncingObject : MonoBehaviour
+public class BouncingObject : MonoBehaviour
 {
     [Header("Configuració Base")]
-    [SerializeField] protected float speed = 3.5f; // 'protected' vol dir que els fills hi poden accedir
+    // 'public' fa que sigui fàcil de veure i modificar des de qualsevol lloc també de l'Inspector
+    public float speed = 3.5f;
 
-    protected Rigidbody rb;
+    // 'public' perquè les classes filles (Item, Hazard) puguin fer servir 'rb' sense problemes
+    public Rigidbody rb;
 
-    // 'virtual' permet que els fills (Hazards/Items) afegeixin més codi al seu Awake si ho necessiten
-    protected virtual void Awake()
+    // S'executa automàticament quan comença el joc.
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
         // 1. Configuració Física Comuna
         rb.useGravity = false;
+        // Bloquejar eix Y i rotacions per evitar girs no desitjats
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
 
         // 2. Impuls Inicial Aleatori
-        Vector3 initialDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-        if (initialDir == Vector3.zero) initialDir = Vector3.forward;
-        
-        rb.linearVelocity = initialDir * speed;
+        Vector3 VelocitatInicial = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+
+        // Assegurar que no sigui zero i si es zero, posar cap endavant un alre cop
+        // 
+        if (VelocitatInicial == Vector3.zero) VelocitatInicial = Vector3.forward;
+
+        // Aplicar velocitat inicial
+        rb.linearVelocity = VelocitatInicial * speed;
     }
 
-    // Aquesta funció es igual per tots, així que no cal fer-la 'virtual' (opcional)
-    protected void FixedUpdate()
+    // S'executa a intervals fixos per a la física
+    void FixedUpdate()
     {
         // Mantenir velocitat constant
-        Vector3 currentVel = rb.linearVelocity;
-        currentVel.y = 0f; // Assegurar pla horitzontal
+        Vector3 VelocitatConstant = rb.linearVelocity;
+        VelocitatConstant.y = 0f; // Assegurar pla horitzontal
 
-        if (currentVel.sqrMagnitude < 0.1f)
+        // Comprovar si s'ha aturat completament
+        if (VelocitatConstant.sqrMagnitude < 0.1f)
         {
              // Si s'ha parat, re-arrancar
              Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-             currentVel = randomDir * speed;
+            // Poso velocitat per direcció aleatòria
+            VelocitatConstant = randomDir * speed;
         }
         else
         {
             // Normalitzar i aplicar velocitat exacta
-            currentVel = currentVel.normalized * speed;
+            VelocitatConstant = VelocitatConstant.normalized * speed;
         }
 
-        rb.linearVelocity = currentVel;
+        // Actualitzar velocitat al linearVelocity del Rigidbody
+        rb.linearVelocity = VelocitatConstant;
     }
 
     // Lògica per no quedar-se enganxat a les parets
-    protected void OnCollisionStay(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
+        // Iterar per tots els punts de contacte
         foreach (ContactPoint contact in collision.contacts)
         {
             if (Mathf.Abs(contact.normal.y) > 0.5f) continue; // Ignorar terra
